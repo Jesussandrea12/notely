@@ -1,0 +1,19 @@
+<div class="form-wrapper">
+  <mat-form-field>
+    <input matInput placeholder="Note title" [(ngModel)]="note.title">
+  </mat-form-field>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Description" [(ngModel)]="note.description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Select category" [(ngModel)]="note.category">
+      <mat-option *ngFor="let cat of categories" [value]="cat">
+        {{ cat }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="accent" (click)="saveNote()">Save note</button>
+</div>

@@ -1,0 +1,25 @@
+<div class="hero__wrapper">
+  <h1>
+    Welcome to <span class="font-kaushan">Notely!</span>
+  </h1>
+</div>
+
+<div class="notes__wrapper">
+  <mat-list>
+    <mat-list-item class="list__item" *ngFor="let note of notes" routerLink="/create/{{ note.id }}">
+      <mat-icon mat-list-icon>note</mat-icon>
+      <h4 mat-line>{{ note.title }}</h4>
+      <p mat-line>{{ note.description }}</p>
+      <p mat-line>
+        <small> {{ note.category}} - {{note.id | date }} </small>
+      </p>
+      <mat-chip-list>
+        <mat-chip color="warn" (click)="deleteNote(note)">Delete</mat-chip>
+      </mat-chip-list>
+    </mat-list-item>
+  </mat-list>
+</div>
+
+<button mat-fab color="accent" routerLink="/create" class="btn">
+  <mat-icon aria-label="Add">add</mat-icon>
+</button>

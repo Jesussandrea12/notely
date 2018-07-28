@@ -1,0 +1,12 @@
+.form-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    justify-content: center;
+    margin: 3em auto;
+    padding: 2em;
+}
+
+.form-wrapper > * {
+    width: 100%;
+}
