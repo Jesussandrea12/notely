@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { NotesService } from '../../services/notes.service';
 // import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import swal from 'sweetalert2';
 
 @Component({
@@ -13,17 +14,43 @@ export class HomeComponent implements OnInit {
   notes: any = [];
   id: any = null;
 
+  loggedIn = false;
+  loggedUser: any = null;
+
   constructor(
     private notesService: NotesService,
     public afDB: AngularFireDatabase,
+    public authService: AuthService
   ) {
     this.notesService.getNotes().valueChanges()
       .subscribe((res) => {
-        this.notes = res;
+        this.notes = res.reverse();
+      });
+
+    this.authService.isLogged()
+      .subscribe((result) => {
+        if (result && result.uid) {
+          this.loggedIn = true;
+          setTimeout(() => {
+            this.loggedUser = this.authService.getUser().currentUser.email;
+          }, 500);
+        } else {
+          this.loggedIn = false;
+        }
+      }, (error) => {
+        this.loggedIn = false;
       });
   }
 
   ngOnInit() {
+  }
+
+  login() {
+    this.authService.loginWithGoogle();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   deleteNote(note) {

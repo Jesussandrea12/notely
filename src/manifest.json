@@ -7,7 +7,8 @@
   "display": "fullscreen",
   "scope": "/",
   "orientation": "any",
-  "start_url": "http://127.0.0.1:8080",
+  "start_url": "note-ly.firebaseapp.com",
+  "gc_sender_id": "103953800507",
   "icons": [
     {
       "src": "assets/icons/icon-72x72.png",

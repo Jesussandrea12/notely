@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,9 @@ import { SwUpdate } from '@angular/service-worker';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  constructor(private swUpdate: SwUpdate) {}
+  constructor(
+    private authService: AuthService,
+    private swUpdate: SwUpdate) { }
 
   ngOnInit(): void {
     if (this.swUpdate.isEnabled) {

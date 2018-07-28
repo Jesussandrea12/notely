@@ -8,6 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { NotesService } from '../services/notes.service';
+import { AuthService } from '../services/auth.service';
+import { MyGuard } from '../services/guard.service';
 
 // material angular
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -44,8 +46,9 @@ const firebaseConfig: any = {
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'create', component: CreateComponent },
-  { path: 'create/:id', component: CreateComponent },
+  { path: 'create', component: CreateComponent, canActivate: [MyGuard] },
+  { path: 'create/:id', component: CreateComponent, canActivate: [MyGuard] },
+  { path: 'create/new', component: CreateComponent, canActivate: [MyGuard] },
 ];
 
 @NgModule({
@@ -79,7 +82,7 @@ const routes: Routes = [
     MatChipsModule,
     // MatOptionModule,
   ],
-  providers: [NotesService],
+  providers: [NotesService, AuthService, MyGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

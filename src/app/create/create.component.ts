@@ -4,6 +4,7 @@ import { NotesService } from '../../services/notes.service';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-create',
@@ -22,6 +23,7 @@ export class CreateComponent implements OnInit {
 
   constructor(
     private notesService: NotesService,
+    private authService: AuthService,
     public afDB: AngularFireDatabase,
     public snackBar: MatSnackBar,
     private route: ActivatedRoute,
@@ -29,12 +31,13 @@ export class CreateComponent implements OnInit {
     private router: Router
   ) {
     this.id = this.route.snapshot.params['id'];
-    if (this.id !== 'new') {
+    if (this.id === 'new') {
+      this.note = {};
+    } else {
       this.notesService.getNote(this.id)
         .valueChanges().subscribe(res => {
           this.note = res;
-          // this.note = JSON.parse(JSON.stringify(res));
-        });
+      });
     }
    }
 
@@ -48,6 +51,7 @@ export class CreateComponent implements OnInit {
     this.notesService.createNote(this.note)
       .then(() => {
         this.note = {};
+        // this.note.author = this.authService.getUser().currentUser.uid;
         this.openSnackBar('Note saved', 'success');
       })
       .catch(err => {

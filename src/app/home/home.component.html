@@ -2,9 +2,11 @@
   <h1>
     Welcome to <span class="font-kaushan">Notely!</span>
   </h1>
+  <button mat-flat-button color="primary" *ngIf="!loggedIn" (click)="login()">Login</button>
+  <button mat-flat-button color="primary" *ngIf="loggedIn" (click)="logout()">logout</button>
 </div>
 
-<div class="notes__wrapper">
+<div class="notes__wrapper" *ngIf="loggedIn">
   <mat-list>
     <mat-list-item class="list__item" *ngFor="let note of notes" routerLink="/create/{{ note.id }}">
       <mat-icon mat-list-icon>note</mat-icon>
@@ -18,8 +20,8 @@
       </mat-chip-list>
     </mat-list-item>
   </mat-list>
+  
+  <button mat-fab color="accent" routerLink="/create/new" class="btn">
+    <mat-icon aria-label="Add">add</mat-icon>
+  </button>
 </div>
-
-<button mat-fab color="accent" routerLink="/create" class="btn">
-  <mat-icon aria-label="Add">add</mat-icon>
-</button>
