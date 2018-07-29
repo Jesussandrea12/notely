@@ -3,33 +3,30 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
 
-import { take } from 'rxjs/operators';
-
 import { BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
+import 'rxjs/add/operator/take';
+import { map } from 'rxjs/operators';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MessagingService {
-    currentMessage = new BehaviorSubject(null);
-    messaging = firebase.messaging();
 
+    messaging = firebase.messaging();
+    currentMessage = new BehaviorSubject(null);
     constructor(private db: AngularFireDatabase, private afAuth: AngularFireAuth) { }
 
+
     updateToken(token) {
-        this.afAuth.authState.pipe(take(1)).subscribe(user => {
-            if (!user) {
-                return;
-            } else {
-                const data = { [user.uid]: token };
-                this.db.object('fcmTokens/').update(data);
-            }
+        this.afAuth.authState.subscribe(user => {
+            if (!user) { return; }
+
+            const data = { [user.uid]: token };
+            this.db.object('fcmTokens/').update(data);
         });
     }
 
     getPermission() {
-        this.messaging
-            .requestPermission()
+        this.messaging.requestPermission()
             .then(() => {
                 console.log('Notification permission granted.');
                 return this.messaging.getToken();
@@ -38,13 +35,13 @@ export class MessagingService {
                 console.log(token);
                 this.updateToken(token);
             })
-            .catch(err => {
+            .catch((err) => {
                 console.log('Unable to get permission to notify.', err);
             });
     }
 
     receiveMessage() {
-        this.messaging.onMessage(payload => {
+        this.messaging.onMessage((payload) => {
             console.log('Message received.', payload);
             this.currentMessage.next(payload);
         });

@@ -32,6 +32,7 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { HomeComponent } from './home/home.component';
 import { CreateComponent } from './create/create.component';
 import { FormsModule } from '@angular/forms';
+import { MessagingService } from '../services/messaging.service';
 
 const firebaseConfig: any = {
   firebase: {
@@ -82,7 +83,7 @@ const routes: Routes = [
     MatChipsModule,
     // MatOptionModule,
   ],
-  providers: [NotesService, AuthService, MyGuard],
+  providers: [NotesService, AuthService, MyGuard, MessagingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
